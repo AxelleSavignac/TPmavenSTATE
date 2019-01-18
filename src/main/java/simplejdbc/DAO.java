@@ -169,5 +169,25 @@ public class DAO {
 		return result;
 
 	}
+        
+         public List<String> listStates() throws DAOException{
+            List<String> States = new LinkedList<>();
+            String sql = "SELECT DISTINCT STATE FROM CUSTOMER";
+            try (   Connection connection = myDataSource.getConnection(); // Ouvrir une connexion
+			Statement stmt = connection.createStatement(); // On crée un statement pour exécuter une requête
+			ResultSet rs = stmt.executeQuery(sql) // Un ResultSet pour parcourir les enregistrements du résultat
+		) {
+			while (rs.next()) { // Pas la peine de faire while, il y a 1 seul enregistrement
+				// On récupère le champ NUMBER de l'enregistrement courant
+				States.add(rs.getString("State"));
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger("DAO").log(Level.SEVERE, null, ex);
+			throw new DAOException(ex.getMessage());
+		}
+
+		return States;
+            
+        }
 
 }
